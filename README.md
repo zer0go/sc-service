@@ -5,7 +5,12 @@
 $ make install
 ```
 
-## Install
+## Build
 ```shell
-$ make install
+$ make build
+```
+
+## Show help
+```shell
+$ make run cmd=help
 ```
