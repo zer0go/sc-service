@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
+	"github.com/zer0go/ws-relay-service/cmd"
 )
 
 var Version = "development"
 
 func main() {
-	fmt.Println("Example App " + Version)
+	cmd.Execute(Version)
 }
