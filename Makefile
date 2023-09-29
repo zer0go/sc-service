@@ -23,8 +23,8 @@ build-all: ## Build application for supported architectures
 	GOOS=darwin GOARCH=arm64 CGO_ENABLED=0 go build -ldflags="-X 'main.Version=${version}'" -o build/${BINARY_NAME}-darwin-aarch64 main.go
 	GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -ldflags="-X 'main.Version=${version}'" -o build/${BINARY_NAME}-windows-x86_64.exe main.go
 
-run: ## Run the application
-	go run main.go
+run: ## Run the application (eg: make run cmd=help)
+	go run main.go ${cmd}
 
 lint: ## Check lint errors
 	staticcheck ./...
