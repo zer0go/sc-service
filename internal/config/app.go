@@ -16,7 +16,8 @@ const (
 )
 
 type config struct {
-	JWTSecret string `env:"JWT_SECRET,required"`
+	JWTSecret           string `env:"JWT_SECRET,required"`
+	ServiceWebSocketUrl string `env:"SERVICE_WS_URL,required"`
 }
 
 var App config
