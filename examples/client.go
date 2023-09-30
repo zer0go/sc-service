@@ -22,17 +22,17 @@ var clientCommand = &cobra.Command{
 	Short: "Websocket client",
 	Long:  `This command connect to websocket server`,
 	Run: func(cmd *cobra.Command, args []string) {
-		addr, _ := cmd.Flags().GetString("addr")
+		serviceUrl, _ := cmd.Flags().GetString("url")
 		from, _ := cmd.Flags().GetString("from")
 		to, _ := cmd.Flags().GetString("to")
 		secret, _ := cmd.Flags().GetString("secret")
 
-		runCommand(addr, from, to, secret)
+		runCommand(serviceUrl, from, to, secret)
 	},
 }
 
 func init() {
-	clientCommand.Flags().StringP("addr", "a", "0.0.0.0:8080", "WebSocket service address")
+	clientCommand.Flags().StringP("url", "u", "ws://localhost:8080/ws", "WebSocket service url")
 	clientCommand.Flags().StringP("from", "f", "client1", "From client id")
 	clientCommand.Flags().StringP("to", "t", "client2", "RecipientId client id")
 	clientCommand.Flags().StringP("secret", "s", "", "JWT Secret")
@@ -47,7 +47,7 @@ func main() {
 	}
 }
 
-func runCommand(addr, fromClientId, toClientId, secret string) {
+func runCommand(serviceUrl, fromClientId, toClientId, secret string) {
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt, syscall.SIGINT)
 
@@ -62,14 +62,18 @@ func runCommand(addr, fromClientId, toClientId, secret string) {
 
 	if err != nil {
 		log.Fatal(err)
-		return
 	}
 	fmt.Println(signedString)
 
 	h := http.Header{}
 	h.Add("Authorization", fmt.Sprintf("Bearer %s", signedString))
 
-	u := url.URL{Scheme: "ws", Host: addr, Path: "/ws"}
+	u, err := url.Parse(serviceUrl)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	//u := url.URL{Scheme: "wss", Host: addr, Path: "/ws"}
 	log.Printf("connecting to %s (%s)", u.String(), fromClientId)
 
 	c, _, err := websocket.DefaultDialer.Dial(u.String(), h)
