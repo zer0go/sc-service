@@ -48,7 +48,6 @@ func ConfigureLogger(verbosity int) {
 
 	log.Logger = log.
 		With().
-		Timestamp().
 		Stack().
 		Caller().
 		Logger()
