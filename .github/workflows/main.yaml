@@ -86,17 +86,5 @@ jobs:
           path: build/
       - name: Release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: "build/*"
-      # - name: Uploaded binaries as release assets
-      #   run: |
-      #     set -x
-      #     tag_name="${GITHUB_REF##*/}"
-      #     assets=()
-      #     for binary in ./build/*; do
-      #       assets+=("-a" "${binary}")
-      #     done
-      #     hub release edit "${assets[@]}" -m "$tag_name" "$tag_name"
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
